@@ -4,11 +4,15 @@
   "description": "Personal portfolio built with Astro",
   "type": "module",
   "scripts": {
+    "predev": "npm run resume",
     "dev": "astro dev",
     "start": "astro dev",
+    "prebuild": "npm run resume",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "resume:template": "tsx scripts/build-resume-template.ts",
+    "resume": "tsx scripts/generate-resume.ts"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
@@ -16,5 +20,11 @@
     "astro": "^7.3.2",
     "tailwindcss": "^4.1.13",
     "typescript": "^5.9.2"
+  },
+  "devDependencies": {
+    "docx": "^9.7.1",
+    "docxtemplater": "^3.69.3",
+    "pizzip": "^3.2.0",
+    "tsx": "^4.23.13"
   }
 }
