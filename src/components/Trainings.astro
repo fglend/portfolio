@@ -1,0 +1,20 @@
+---
+import Section from "./Section.astro";
+import { trainings } from "../data/site";
+---
+
+<Section id="trainings" eyebrow="Continuous Learning" title="Trainings Attended">
+  <div class="flex flex-col divide-y divide-[var(--border)] rounded-2xl border border-[var(--border)]">
+    {
+      trainings.map((item) => (
+        <div class="flex items-center justify-between gap-4 px-6 py-4">
+          <div>
+            <p class="font-medium">{item.title}</p>
+            <p class="text-sm text-[var(--fg-muted)]">{item.issuer}</p>
+          </div>
+          <span class="shrink-0 font-mono text-sm text-[var(--fg-muted)]">{item.year}</span>
+        </div>
+      ))
+    }
+  </div>
+</Section>

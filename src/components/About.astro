@@ -1,0 +1,31 @@
+---
+import Section from "./Section.astro";
+import { profile } from "../data/site";
+---
+
+<Section id="about" eyebrow="About" title="A bit about me">
+  <div class="grid gap-8 md:grid-cols-3">
+    <div class="md:col-span-2">
+      <p class="text-[var(--fg-muted)] leading-relaxed">
+        {profile.summary} Over the past 4 years, I've worked across the stack — from designing
+        database schemas and APIs to building the internal tools that make teams faster. I care
+        about writing code that is easy to reason about, and I enjoy contributing back to the
+        open-source tools I rely on every day.
+      </p>
+    </div>
+    <dl class="flex flex-col gap-3 text-sm">
+      <div class="flex justify-between border-b border-[var(--border)] pb-3">
+        <dt class="text-[var(--fg-muted)]">Location</dt>
+        <dd>{profile.location}</dd>
+      </div>
+      <div class="flex justify-between border-b border-[var(--border)] pb-3">
+        <dt class="text-[var(--fg-muted)]">Experience</dt>
+        <dd>4+ years</dd>
+      </div>
+      <div class="flex justify-between pb-3">
+        <dt class="text-[var(--fg-muted)]">Email</dt>
+        <dd class="truncate"><a href={`mailto:${profile.email}`} class="hover:underline">{profile.email}</a></dd>
+      </div>
+    </dl>
+  </div>
+</Section>
