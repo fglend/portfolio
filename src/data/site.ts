@@ -165,6 +165,10 @@ export type ProjectEntry = {
   visibility: ProjectVisibility;
   /** Packagist vendor/package name, used to render a live downloads badge. */
   packagist?: string;
+  /** Your role on the project, shown in the detail modal. */
+  keyRole: string;
+  /** Bullet points of what you specifically built, shown in the detail modal. */
+  contributions: string[];
 };
 
 export const projects: ProjectEntry[] = [
@@ -176,6 +180,12 @@ export const projects: ProjectEntry[] = [
     tags: ["PHP", "Laravel", "Filament", "Kafka"],
     visibility: "open-source",
     packagist: "gurento/kafka-consumer",
+    keyRole: "Creator & Maintainer",
+    contributions: [
+      "Designed the plugin architecture for consuming Kafka topics from within the Filament admin panel.",
+      "Built the real-time message inspection UI, including filtering and payload viewing.",
+      "Published and continue to maintain the package on Packagist.",
+    ],
   },
   {
     title: "E-SENTRY",
@@ -183,6 +193,12 @@ export const projects: ProjectEntry[] = [
       "A web-based water quality monitoring system built for Tadlac Lake, Los Baños, including a data processing pipeline for researcher-facing analysis.",
     tags: ["PHP", "Laravel", "MySQL"],
     visibility: "private",
+    keyRole: "Sole Developer",
+    contributions: [
+      "Built the system end-to-end, from database design to the researcher-facing dashboards.",
+      "Implemented the data processing pipeline used to analyze water quality readings.",
+      "Worked directly with researchers to refine data collection and reporting needs.",
+    ],
   },
   {
     title: "Procurement Assistant and Verification Environment",
@@ -190,6 +206,12 @@ export const projects: ProjectEntry[] = [
       "A Project Procurement Management Plan system for planning, tracking, and approving institutional procurement workflows.",
     tags: ["PHP", "Laravel", "Filament", "MySQL", "Kafka"],
     visibility: "private",
+    keyRole: "Backend Developer",
+    contributions: [
+      "Designed the procurement plan data model and approval workflow states.",
+      "Built the Filament admin panels used to track and approve procurement requests.",
+      "Integrated Kafka-based event processing for cross-system notifications.",
+    ],
   },
   {
     title: "BIDANI-BMIS",
@@ -197,6 +219,12 @@ export const projects: ProjectEntry[] = [
       "A web-based Barangay Information Management System for collecting barangay data and supporting strategic decision-making through reports, Excel exports, and dynamic survey questionnaires.",
     tags: ["PHP", "Laravel", "Filament", "PostgreSQL"],
     visibility: "private",
+    keyRole: "Full-Stack Developer",
+    contributions: [
+      "Built the dynamic questionnaire engine used to design and deploy barangay surveys.",
+      "Implemented reporting and Excel export tools for data-driven decision-making.",
+      "Delivered training sessions to help staff adopt the system.",
+    ],
   },
   {
     title: "BIDANI-BMIS Mobile",
@@ -204,6 +232,12 @@ export const projects: ProjectEntry[] = [
       "The companion mobile app for BIDANI-BMIS, built for field data collection so barangay information can be gathered and synced on the go.",
     tags: ["Kotlin", "Android"],
     visibility: "private",
+    keyRole: "Mobile Developer",
+    contributions: [
+      "Built the native Android app used by field staff to collect barangay data offline.",
+      "Implemented data sync between the mobile app and the BIDANI-BMIS backend.",
+      "Designed the survey-taking UI for ease of use in the field.",
+    ],
   },
   {
     title: "Piso-Wifi System",
@@ -212,6 +246,12 @@ export const projects: ProjectEntry[] = [
     href: "https://github.com/fglend/Piso-WiFi",
     tags: ["Python", "Flask", "SQLite", "Raspberry Pi"],
     visibility: "personal",
+    keyRole: "Sole Developer",
+    contributions: [
+      "Built the Flask-based captive portal and coin-slot payment logic.",
+      "Configured the Raspberry Pi network setup to gate internet access per session.",
+      "Designed the SQLite schema for tracking sessions and payments.",
+    ],
   },
   {
     title: "Real-time Object Detection using Faster R-CNN with Kalman Filter",
@@ -220,6 +260,12 @@ export const projects: ProjectEntry[] = [
     href: "https://github.com/fglend/kalman-fastercnn",
     tags: ["Python", "Flask", "Machine Learning", "Image Processing"],
     visibility: "personal",
+    keyRole: "Sole Developer (Thesis Project)",
+    contributions: [
+      "Implemented object detection using Faster R-CNN for video frame analysis.",
+      "Added a Kalman Filter layer to smooth and improve object tracking accuracy.",
+      "Built the Flask interface used to run and visualize detection on video streams.",
+    ],
   },
 ];
 

@@ -1,6 +1,7 @@
 ---
 import Section from "./Section.astro";
 import ProjectCard from "./ProjectCard.astro";
+import ProjectModal from "./ProjectModal.astro";
 import { projects } from "../data/site";
 
 const openSource = projects.filter((p) => p.visibility === "open-source");
@@ -47,4 +48,6 @@ const personalProjects = projects.filter((p) => p.visibility === "personal");
       )
     }
   </div>
+
+  <ProjectModal />
 </Section>
