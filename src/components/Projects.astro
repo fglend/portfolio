@@ -5,6 +5,7 @@ import { projects } from "../data/site";
 
 const openSource = projects.filter((p) => p.visibility === "open-source");
 const privateProjects = projects.filter((p) => p.visibility === "private");
+const personalProjects = projects.filter((p) => p.visibility === "personal");
 ---
 
 <Section id="projects" eyebrow="Projects" title="Projects I've built">
@@ -27,6 +28,18 @@ const privateProjects = projects.filter((p) => p.visibility === "private");
           <h3 class="mb-4 text-sm font-medium text-[var(--fg-muted)]">Private</h3>
           <div class="grid gap-6">
             {privateProjects.map((project) => (
+              <ProjectCard project={project} />
+            ))}
+          </div>
+        </div>
+      )
+    }
+    {
+      personalProjects.length > 0 && (
+        <div>
+          <h3 class="mb-4 text-sm font-medium text-[var(--fg-muted)]">Personal</h3>
+          <div class="grid gap-6">
+            {personalProjects.map((project) => (
               <ProjectCard project={project} />
             ))}
           </div>

@@ -154,7 +154,7 @@ export const trainings: TrainingEntry[] = [
   },
 ];
 
-export type ProjectVisibility = "open-source" | "private";
+export type ProjectVisibility = "open-source" | "private" | "personal";
 
 export type ProjectEntry = {
   title: string;
@@ -204,6 +204,22 @@ export const projects: ProjectEntry[] = [
       "The companion mobile app for BIDANI-BMIS, built for field data collection so barangay information can be gathered and synced on the go.",
     tags: ["Kotlin", "Android"],
     visibility: "private",
+  },
+  {
+    title: "Piso-Wifi System",
+    description:
+      "A Raspberry Pi-based system that provides internet access through a coin-operated mechanism, allowing users to pay for Wi-Fi access.",
+    href: "https://github.com/fglend/Piso-WiFi",
+    tags: ["Python", "Flask", "SQLite", "Raspberry Pi"],
+    visibility: "personal",
+  },
+  {
+    title: "Real-time Object Detection using Faster R-CNN with Kalman Filter",
+    description:
+      "A real-time object detection system using Faster R-CNN with Kalman Filter for improved tracking accuracy. Used on my Thesis project to track and monitor the movement of objects in a video stream.",
+    href: "https://github.com/fglend/kalman-fastercnn",
+    tags: ["Python", "Flask", "Machine Learning", "Image Processing"],
+    visibility: "personal",
   },
 ];
 
