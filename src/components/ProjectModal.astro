@@ -53,6 +53,48 @@
   </div>
 </dialog>
 
+<style>
+  dialog#project-modal {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    opacity: 0;
+    transform: scale(0.95) translateY(12px);
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease,
+      overlay 0.2s ease allow-discrete,
+      display 0.2s ease allow-discrete;
+  }
+
+  dialog#project-modal[open] {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+
+  @starting-style {
+    dialog#project-modal[open] {
+      opacity: 0;
+      transform: scale(0.95) translateY(12px);
+    }
+  }
+
+  dialog#project-modal::backdrop {
+    opacity: 0;
+    transition: opacity 0.2s ease allow-discrete;
+  }
+
+  dialog#project-modal[open]::backdrop {
+    opacity: 1;
+  }
+
+  @starting-style {
+    dialog#project-modal[open]::backdrop {
+      opacity: 0;
+    }
+  }
+</style>
+
 <script>
   type ProjectModalPayload = {
     title: string;
