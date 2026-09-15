@@ -9,7 +9,7 @@ export const profile = {
   summary:
     "Software developer with 4 years of experience designing backend services, integrations, and developer tooling. Focused on clean architecture, maintainable code, and shipping software teams can rely on.",
   location: "Philippines",
-  email: "gdferrer@up.edu.ph",
+  email: "glendferrer05@gmail.com",
   avatar: "/avatar.jpg",
   social: {
     github: "https://github.com/fglend",
@@ -223,12 +223,6 @@ export const techStack: TechCategory[] = [
   },
   {
     category: "Automation",
-    items: [
-      "Git Action",
-      "Supervisor",
-      "Cron Jobs",
-      "Queue Workers",
-      "Python Scripts",
-    ],
+    items: ["Supervisor", "Cron Jobs", "Queue Workers", "Python Scripts"],
   },
 ];
