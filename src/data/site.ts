@@ -38,7 +38,7 @@ export const experience: ExperienceEntry[] = [
   {
     role: "Computer Programmer II",
     company: "University of the Philippines - Los Baños",
-    period: "2025 — Present",
+    period: "2025 — 2026",
     location: "Los Baños, Laguna",
     highlights: [
       "Developed and maintained RESTful APIs and backend services for university systems and applications.",
