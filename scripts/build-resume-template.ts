@@ -125,8 +125,8 @@ const doc = new Document({
         }),
         tag("{/trainings}"),
 
-        // Open-source projects
-        sectionHeading("Open Source Projects"),
+        // Projects
+        sectionHeading("Projects"),
         tag("{#projects}"),
         new Paragraph({
           spacing: { before: 120 },
@@ -136,9 +136,15 @@ const doc = new Document({
         new Paragraph({
           spacing: { after: 60 },
           children: [
-            new TextRun({ text: "{href}  ·  {tags}", size: 18, color: MUTED_COLOR }),
+            new TextRun({ text: "{meta}", size: 18, color: MUTED_COLOR }),
           ],
         }),
+        tag("{#contributions}"),
+        new Paragraph({
+          bullet: { level: 0 },
+          children: [new TextRun({ text: "{.}", size: 19 })],
+        }),
+        tag("{/contributions}"),
         tag("{/projects}"),
 
         // Tech stack

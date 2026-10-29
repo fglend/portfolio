@@ -61,14 +61,12 @@ doc.render({
     issuer: item.issuer,
     year: item.year,
   })),
-  projects: projects
-    .filter((project) => project.visibility === "open-source")
-    .map((project) => ({
-      title: project.title,
-      description: project.description,
-      href: project.href ?? "",
-      tags: project.tags.join(", "),
-    })),
+  projects: projects.map((project) => ({
+    title: project.title,
+    description: project.description,
+    meta: [project.href, project.tags.join(", ")].filter(Boolean).join("  ·  "),
+    contributions: project.contributions,
+  })),
   techStack: techStack.map((group) => ({
     category: group.category,
     items: group.items.join(", "),
