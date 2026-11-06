@@ -1,18 +1,79 @@
 ---
 import Section from "./Section.astro";
 import { trainings } from "../data/site";
+
+const SPEAKER_PREFIX = /^resource person:\s*/i;
+const SMALL_WORDS = new Set(["a", "an", "and", "as", "at", "for", "in", "of", "on", "or", "the", "to", "toward", "using", "with"]);
+const ACRONYMS = new Set(["GIS", "TSIS", "SALN", "BMIS", "BIDANI", "PAVE", "HR", "UPLB", "UP", "QC", "GRIDS", "DAP", "8TH"]);
+
+// Some titles in site.ts are written in all caps; render those in title case
+// without touching the source data (the resume generator reads it as-is).
+function displayTitle(raw: string) {
+  const title = raw.trim();
+  if (title !== title.toUpperCase()) return title;
+  return title
+    .toLowerCase()
+    .split(" ")
+    .map((word, i) => {
+      const upper = word.toUpperCase();
+      if (ACRONYMS.has(upper.replace(/[^A-Z0-9]/g, ""))) return upper.replace("8TH", "8th");
+      if (i > 0 && SMALL_WORDS.has(word)) return word;
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(" ")
+    .replace(/:\s*(\w)/, (_, c: string) => `: ${c.toUpperCase()}`)
+    .replace("Hackaton", "Hackathon");
+}
+
+function displayIssuer(raw: string) {
+  return raw === "UDEMY" ? "Udemy" : raw;
+}
+
+const items = trainings.map((t) => ({
+  title: displayTitle(t.title.replace(SPEAKER_PREFIX, "")),
+  issuer: displayIssuer(t.issuer),
+  year: t.year,
+  speaker: SPEAKER_PREFIX.test(t.title),
+}));
+
+const byYear = [...new Set(items.map((i) => i.year))]
+  .sort((a, b) => Number(b) - Number(a))
+  .map((year) => ({ year, entries: items.filter((i) => i.year === year) }));
+
+const speakerCount = items.filter((i) => i.speaker).length;
 ---
 
-<Section id="trainings" eyebrow="Continuous Learning" title="Trainings Attended">
-  <div class="flex flex-col divide-y divide-[var(--border)] rounded-2xl border border-[var(--border)]">
+<Section
+  id="trainings"
+  title="Trainings"
+  meta={`${items.length} sessions, ${speakerCount} as resource person`}
+>
+  <div class="flex flex-col gap-10">
     {
-      trainings.map((item) => (
-        <div class="flex items-center justify-between gap-4 px-6 py-4">
-          <div>
-            <p class="font-medium">{item.title}</p>
-            <p class="text-sm text-[var(--fg-muted)]">{item.issuer}</p>
-          </div>
-          <span class="shrink-0 font-mono text-sm text-[var(--fg-muted)]">{item.year}</span>
+      byYear.map((group) => (
+        <div class="grid gap-3 sm:grid-cols-[72px_1fr] sm:gap-6">
+          <h3 class="font-mono text-sm font-medium text-[var(--fg-muted)] sm:pt-4">{group.year}</h3>
+          <ul class="divide-y divide-[var(--border)] overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)]">
+            {group.entries.map((item) => (
+              <li class="flex flex-col gap-2 px-5 py-4 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+                <div class="min-w-0">
+                  <p class="font-medium leading-snug">{item.title}</p>
+                  <p class="mt-0.5 text-sm text-[var(--fg-muted)]">{item.issuer}</p>
+                </div>
+                {item.speaker ? (
+                  <span class="inline-flex w-fit shrink-0 items-center gap-1.5 rounded-full bg-[var(--amber-soft)] px-2.5 py-0.5 text-xs font-medium text-[var(--amber)]">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-3 w-3" aria-hidden="true">
+                      <path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3Z" />
+                      <path d="M19 11a7 7 0 0 1-14 0M12 18v3" />
+                    </svg>
+                    Resource person
+                  </span>
+                ) : (
+                  <span class="w-fit shrink-0 text-xs text-[var(--fg-faint)]">Attended</span>
+                )}
+              </li>
+            ))}
+          </ul>
         </div>
       ))
     }

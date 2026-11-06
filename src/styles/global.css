@@ -3,50 +3,121 @@
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-sans: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: "Bricolage Grotesque", "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
 }
 
+/* Palette: "lake mist" neutrals, deep-lake ink, a teal for interaction and
+   signal amber for live/stateful details (offsets, download counts). */
 :root {
   color-scheme: light;
-  --bg: #fafafa;
+  --bg: #eef2f0;
   --bg-elevated: #ffffff;
-  --fg: #18181b;
-  --fg-muted: #52525b;
-  --border: #e4e4e7;
-  --accent: #18181b;
+  --bg-sunken: #e3e9e6;
+  --fg: #10282b;
+  --fg-muted: #4c6265;
+  --fg-faint: #7d8f91;
+  --border: #cfd9d6;
+  --border-strong: #a9bab7;
+  --teal: #0b6e6e;
+  --teal-soft: #d4e8e5;
+  --amber: #b4660f;
+  --amber-soft: #f6e4cc;
+  --accent: var(--teal);
+  --shadow: 0 1px 0 rgb(16 40 43 / 0.04), 0 12px 32px -16px rgb(16 40 43 / 0.18);
 }
 
 [data-theme="dark"] {
   color-scheme: dark;
-  --bg: #0a0a0b;
-  --bg-elevated: #131316;
-  --fg: #f4f4f5;
-  --fg-muted: #a1a1aa;
-  --border: #27272a;
-  --accent: #f4f4f5;
+  --bg: #0c1a1c;
+  --bg-elevated: #122427;
+  --bg-sunken: #091517;
+  --fg: #e4eeec;
+  --fg-muted: #9db1af;
+  --fg-faint: #6b8280;
+  --border: #213a3d;
+  --border-strong: #335457;
+  --teal: #5cc8bd;
+  --teal-soft: #163b3b;
+  --amber: #f0a440;
+  --amber-soft: #3a2a14;
+  --accent: var(--teal);
+  --shadow: 0 1px 0 rgb(0 0 0 / 0.2), 0 16px 40px -20px rgb(0 0 0 / 0.6);
 }
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   background-color: var(--bg);
   color: var(--fg);
   font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
+.font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+}
+
 ::selection {
-  background-color: var(--fg);
+  background-color: var(--teal);
   color: var(--bg);
 }
 
-.section-heading {
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Faint survey-grid behind the hero: a nod to the GIS / monitoring work. */
+.grid-backdrop {
+  background-image:
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 70% 60% at 70% 40%, black 10%, transparent 75%);
+  opacity: 0.55;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.75rem;
+  line-height: 1.4;
   color: var(--fg-muted);
+  background: var(--bg-elevated);
+}
+
+.link-underline {
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-underline-offset: 4px;
+  transition: text-decoration-color 0.15s ease, color 0.15s ease;
+}
+.link-underline:hover {
+  text-decoration-color: var(--teal);
+  color: var(--fg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

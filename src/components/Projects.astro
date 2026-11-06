@@ -1,53 +1,57 @@
 ---
 import Section from "./Section.astro";
 import ProjectCard from "./ProjectCard.astro";
+import { visibilityLabel } from "../lib/labels";
 import ProjectModal from "./ProjectModal.astro";
-import { projects } from "../data/site";
+import { projects, type ProjectVisibility } from "../data/site";
 
-const openSource = projects.filter((p) => p.visibility === "open-source");
-const privateProjects = projects.filter((p) => p.visibility === "private");
-const personalProjects = projects.filter((p) => p.visibility === "personal");
+const order: ProjectVisibility[] = ["open-source", "private", "personal"];
+const filters = [
+  { value: "all", label: "All", count: projects.length },
+  ...order
+    .map((v) => ({ value: v, label: visibilityLabel[v], count: projects.filter((p) => p.visibility === v).length }))
+    .filter((f) => f.count > 0),
+];
+
+const sorted = [...projects].sort((a, b) => order.indexOf(a.visibility) - order.indexOf(b.visibility));
+const featuredTitle = sorted.find((p) => p.visibility === "open-source")?.title;
 ---
 
-<Section id="projects" eyebrow="Projects" title="Projects I've built">
-  <div class="flex flex-col gap-12">
+<Section id="projects" title="Projects" meta="Open the details on any card for the full list of what I built">
+  <div role="group" aria-label="Filter projects" class="mb-6 flex flex-wrap gap-1.5">
     {
-      openSource.length > 0 && (
-        <div>
-          <h3 class="mb-4 text-sm font-medium text-[var(--fg-muted)]">Open Source</h3>
-          <div class="grid gap-6">
-            {openSource.map((project) => (
-              <ProjectCard project={project} />
-            ))}
-          </div>
-        </div>
-      )
+      filters.map((f, i) => (
+        <button
+          type="button"
+          data-filter={f.value}
+          aria-pressed={i === 0 ? "true" : "false"}
+          class="inline-flex items-center gap-2 rounded-md border border-[var(--border)] px-3 py-1.5 text-sm text-[var(--fg-muted)] transition-colors hover:text-[var(--fg)] aria-pressed:border-[var(--fg)] aria-pressed:bg-[var(--fg)] aria-pressed:text-[var(--bg)]"
+        >
+          {f.label}
+          <span class="font-mono text-xs opacity-70">{f.count}</span>
+        </button>
+      ))
     }
-    {
-      privateProjects.length > 0 && (
-        <div>
-          <h3 class="mb-4 text-sm font-medium text-[var(--fg-muted)]">Private</h3>
-          <div class="grid gap-6">
-            {privateProjects.map((project) => (
-              <ProjectCard project={project} />
-            ))}
-          </div>
-        </div>
-      )
-    }
-    {
-      personalProjects.length > 0 && (
-        <div>
-          <h3 class="mb-4 text-sm font-medium text-[var(--fg-muted)]">Personal</h3>
-          <div class="grid gap-6">
-            {personalProjects.map((project) => (
-              <ProjectCard project={project} />
-            ))}
-          </div>
-        </div>
-      )
-    }
+  </div>
+
+  <div id="project-grid" class="grid gap-4 md:grid-cols-2">
+    {sorted.map((project) => <ProjectCard project={project} featured={project.title === featuredTitle} />)}
   </div>
 
   <ProjectModal />
 </Section>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>("[data-filter]");
+  const cards = document.querySelectorAll<HTMLElement>(".project-card");
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const filter = button.dataset.filter;
+      buttons.forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
+      cards.forEach((card) => {
+        card.hidden = filter !== "all" && card.dataset.visibility !== filter;
+      });
+    });
+  });
+</script>

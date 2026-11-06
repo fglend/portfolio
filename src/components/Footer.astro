@@ -2,19 +2,68 @@
 import { profile } from "../data/site";
 
 const year = new Date().getFullYear();
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
-<footer class="border-t border-[var(--border)]">
-  <div class="mx-auto flex max-w-4xl flex-col items-center gap-4 px-6 py-10 text-sm text-[var(--fg-muted)] sm:flex-row sm:justify-between">
-    <p>&copy; {year} {profile.name}. All rights reserved.</p>
-    <div class="flex items-center gap-5">
-      <a href={profile.social.github} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--fg)]">
-        GitHub
+<footer id="contact" class="border-t border-[var(--border)] bg-[var(--fg)] text-[var(--bg)]">
+  <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6 md:py-28">
+    <h2 class="max-w-3xl font-display text-[clamp(2.25rem,6vw,4.5rem)] font-bold leading-[1] tracking-[-0.03em]">
+      Have a system that needs building?
+    </h2>
+    <p class="mt-5 max-w-xl text-lg opacity-75">
+      I’m happy to talk about backend work, integrations, or the open-source Kafka plugin. Email is the fastest way to reach me.
+    </p>
+
+    <div class="mt-10 flex flex-wrap items-center gap-3">
+      <a
+        href={`mailto:${profile.email}`}
+        class="inline-flex items-center gap-2 rounded-md bg-[var(--bg)] px-5 py-3 font-medium text-[var(--fg)] transition-opacity hover:opacity-90"
+      >
+        {profile.email}
       </a>
-      <a href={profile.social.linkedin} target="_blank" rel="noopener noreferrer" class="hover:text-[var(--fg)]">
-        LinkedIn
+      <button
+        type="button"
+        id="copy-email"
+        data-email={profile.email}
+        class="inline-flex items-center gap-2 rounded-md border border-current/25 px-4 py-3 text-sm font-medium transition-colors hover:border-current/60"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="h-4 w-4" aria-hidden="true">
+          <rect x="9" y="9" width="12" height="12" rx="2" />
+          <path d="M5 15V5a2 2 0 0 1 2-2h10" />
+        </svg>
+        <span id="copy-email-label">Copy email</span>
+      </button>
+      <a
+        href={`${base}/resume.docx`}
+        download
+        class="inline-flex items-center gap-2 rounded-md border border-current/25 px-4 py-3 text-sm font-medium transition-colors hover:border-current/60"
+      >
+        Download resume
       </a>
-      <a href={`mailto:${profile.email}`} class="hover:text-[var(--fg)]"> Email </a>
+    </div>
+
+    <div class="mt-20 flex flex-col gap-4 border-t border-current/15 pt-6 text-sm opacity-70 sm:flex-row sm:items-center sm:justify-between">
+      <p>&copy; {year} {profile.name}</p>
+      <div class="flex items-center gap-5">
+        <a href={profile.social.github} target="_blank" rel="noopener noreferrer" class="hover:underline">GitHub</a>
+        <a href={profile.social.linkedin} target="_blank" rel="noopener noreferrer" class="hover:underline">LinkedIn</a>
+        <a href="#top" class="hover:underline">Back to top</a>
+      </div>
     </div>
   </div>
 </footer>
+
+<script>
+  const button = document.getElementById("copy-email");
+  const label = document.getElementById("copy-email-label");
+  button?.addEventListener("click", async () => {
+    if (!label) return;
+    try {
+      await navigator.clipboard.writeText(button.dataset.email ?? "");
+      label.textContent = "Copied";
+    } catch {
+      label.textContent = "Copy failed, select the address instead";
+    }
+    setTimeout(() => (label.textContent = "Copy email"), 2000);
+  });
+</script>

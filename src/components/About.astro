@@ -1,28 +1,65 @@
 ---
 import Section from "./Section.astro";
-import { profile } from "../data/site";
+import { profile, experience, projects, trainings } from "../data/site";
+
+const focusAreas = [
+  {
+    title: "Backend and APIs",
+    body: "Laravel services, RESTful APIs and the data models behind them, built to be read and changed by the next developer.",
+  },
+  {
+    title: "Event-driven integration",
+    body: "Kafka producers and consumers that let institutional systems talk to each other without hard dependencies.",
+  },
+  {
+    title: "Shipping and running it",
+    body: "Docker environments, deployments, server configuration and monitoring once the code is in production.",
+  },
+];
+
+const facts = [
+  { label: "Based in", value: profile.location },
+  { label: "Experience", value: "4+ years" },
+  { label: "Projects", value: `${projects.length} shipped` },
+  { label: "Trainings", value: `${trainings.length} attended or led` },
+];
 ---
 
-<Section id="about" eyebrow="About" title="A bit about me">
-  <div class="grid gap-8 md:grid-cols-3">
-    <div class="md:col-span-2">
-      <p class="text-[var(--fg-muted)] leading-relaxed">
-        {profile.summary} Over the past 4+ years, I’ve worked across the stack, designing backend systems, database architectures, RESTful APIs, event-driven integrations, and the internal tools that help teams move faster. I enjoy taking ownership of systems from initial design through deployment and ongoing improvement, with a strong focus on maintainability, reliability, and clear architecture. I also value developer experience and actively contribute to the open-source tools and libraries I rely on in my day-to-day work.
+<Section id="about" title="About" meta={`Currently ${experience[0].role}`}>
+  <div class="grid gap-10 xl:grid-cols-[1fr_240px]">
+    <div class="max-w-[68ch] space-y-4 text-lg leading-relaxed text-[var(--fg-muted)]">
+      <p class="text-[var(--fg)]">{profile.summary}</p>
+      <p>
+        Over the past 4+ years I’ve worked across the stack: backend systems, database architecture, RESTful APIs,
+        event-driven integrations, and the internal tools that help teams move faster. I like owning a system from
+        first design through deployment and the improvements that follow, with a strong focus on maintainability,
+        reliability and clear architecture.
+      </p>
+      <p>
+        I care about developer experience too, and contribute back to the open-source tools and libraries I use every day.
       </p>
     </div>
-    <dl class="flex flex-col gap-3 text-sm">
-      <div class="flex justify-between border-b border-[var(--border)] pb-3">
-        <dt class="text-[var(--fg-muted)]">Location</dt>
-        <dd>{profile.location}</dd>
-      </div>
-      <div class="flex justify-between border-b border-[var(--border)] pb-3">
-        <dt class="text-[var(--fg-muted)]">Experience</dt>
-        <dd>4+ years</dd>
-      </div>
-      <div class="flex justify-between pb-3">
-        <dt class="text-[var(--fg-muted)]">Email</dt>
-        <dd class="truncate"><a href={`mailto:${profile.email}`} class="hover:underline">{profile.email}</a></dd>
-      </div>
+
+    <dl class="grid grid-cols-2 gap-px self-start overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--border)] xl:grid-cols-1">
+      {
+        facts.map((fact) => (
+          <div class="bg-[var(--bg-elevated)] px-4 py-3">
+            <dt class="text-xs text-[var(--fg-faint)]">{fact.label}</dt>
+            <dd class="mt-0.5 font-medium">{fact.value}</dd>
+          </div>
+        ))
+      }
     </dl>
+  </div>
+
+  <div class="mt-12 grid gap-px overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--border)] md:grid-cols-3">
+    {
+      focusAreas.map((area) => (
+        <div class="bg-[var(--bg)] p-5">
+          <h3 class="font-display text-lg font-semibold">{area.title}</h3>
+          <p class="mt-2 text-sm text-[var(--fg-muted)]">{area.body}</p>
+        </div>
+      ))
+    }
   </div>
 </Section>

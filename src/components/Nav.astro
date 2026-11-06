@@ -1,21 +1,33 @@
 ---
 import { nav, profile } from "../data/site";
+
+const initials = profile.name
+  .split(" ")
+  .filter((part) => part.length > 0)
+  .map((part) => part[0])
+  .join("")
+  .slice(0, 3);
 ---
 
 <header
-  class="fixed inset-x-0 top-0 z-50 border-b border-[var(--border)] bg-[var(--bg)]/80 backdrop-blur-md"
+  id="site-header"
+  class="fixed inset-x-0 top-0 z-50 border-b border-transparent transition-[background-color,border-color] duration-200"
 >
-  <div class="mx-auto flex max-w-4xl items-center justify-between px-6 py-4">
-    <a href="#top" class="font-mono text-sm font-semibold tracking-tight">
-      {profile.name}
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-4 py-3 sm:px-6">
+    <a href="#top" class="flex items-center gap-2.5" aria-label={`${profile.name}, back to top`}>
+      <span class="grid h-8 w-8 place-items-center rounded-md bg-[var(--fg)] font-display text-xs font-bold text-[var(--bg)]">
+        {initials}
+      </span>
+      <span class="hidden font-display text-sm font-semibold sm:inline">{profile.name}</span>
     </a>
 
-    <nav class="hidden items-center gap-8 md:flex">
+    <nav aria-label="Sections" class="hidden items-center gap-1 lg:flex">
       {
         nav.map((item) => (
           <a
             href={item.href}
-            class="text-sm text-[var(--fg-muted)] transition-colors hover:text-[var(--fg)]"
+            data-nav-link={item.href.slice(1)}
+            class="rounded-md px-3 py-1.5 text-sm text-[var(--fg-muted)] transition-colors hover:text-[var(--fg)] aria-[current=true]:bg-[var(--bg-elevated)] aria-[current=true]:text-[var(--fg)]"
           >
             {item.label}
           </a>
@@ -24,68 +36,71 @@ import { nav, profile } from "../data/site";
     </nav>
 
     <div class="flex items-center gap-2">
+      <a
+        href={`mailto:${profile.email}`}
+        class="hidden rounded-md bg-[var(--fg)] px-3.5 py-1.5 text-sm font-medium text-[var(--bg)] transition-opacity hover:opacity-85 sm:inline-flex"
+      >
+        Email me
+      </a>
       <button
         id="theme-toggle"
-        aria-label="Toggle color theme"
-        class="grid h-9 w-9 place-items-center rounded-full border border-[var(--border)] text-[var(--fg)] transition-colors hover:bg-[var(--bg-elevated)]"
+        type="button"
+        aria-label="Switch color theme"
+        class="grid h-9 w-9 place-items-center rounded-md border border-[var(--border)] text-[var(--fg)] transition-colors hover:bg-[var(--bg-elevated)]"
       >
-        <svg
-          id="icon-sun"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          class="hidden h-4 w-4"
-        >
+        <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="hidden h-4 w-4" aria-hidden="true">
           <circle cx="12" cy="12" r="4"></circle>
-          <path
-            d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
-          ></path>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
         </svg>
-        <svg
-          id="icon-moon"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          class="hidden h-4 w-4"
-        >
+        <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="hidden h-4 w-4" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
         </svg>
       </button>
 
       <button
         id="menu-toggle"
-        aria-label="Toggle navigation menu"
-        class="grid h-9 w-9 place-items-center rounded-full border border-[var(--border)] md:hidden"
+        type="button"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+        class="grid h-9 w-9 place-items-center rounded-md border border-[var(--border)] lg:hidden"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="h-4 w-4">
-          <path id="menu-line-1" d="M4 6h16"></path>
-          <path id="menu-line-2" d="M4 12h16"></path>
-          <path id="menu-line-3" d="M4 18h16"></path>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="h-4 w-4" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16"></path>
         </svg>
       </button>
     </div>
   </div>
 
-  <nav id="mobile-nav" class="hidden flex-col border-t border-[var(--border)] px-6 py-4 md:hidden">
-    {
-      nav.map((item) => (
-        <a
-          href={item.href}
-          class="block py-2 text-sm text-[var(--fg-muted)] transition-colors hover:text-[var(--fg)]"
-        >
-          {item.label}
-        </a>
-      ))
-    }
+  <nav
+    id="mobile-nav"
+    aria-label="Sections"
+    class="hidden border-t border-[var(--border)] bg-[var(--bg)] px-4 py-3 sm:px-6 lg:hidden"
+  >
+    <div class="grid grid-cols-2 gap-1">
+      {
+        nav.map((item) => (
+          <a href={item.href} class="rounded-md px-3 py-2.5 text-sm text-[var(--fg-muted)] transition-colors hover:bg-[var(--bg-elevated)] hover:text-[var(--fg)]">
+            {item.label}
+          </a>
+        ))
+      }
+    </div>
   </nav>
 </header>
 
+<style>
+  #site-header[data-scrolled="true"] {
+    background-color: color-mix(in srgb, var(--bg) 82%, transparent);
+    border-color: var(--border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+</style>
+
 <script>
   const root = document.documentElement;
+  const header = document.getElementById("site-header");
   const themeToggle = document.getElementById("theme-toggle");
   const iconSun = document.getElementById("icon-sun");
   const iconMoon = document.getElementById("icon-moon");
@@ -95,28 +110,51 @@ import { nav, profile } from "../data/site";
     iconSun?.classList.toggle("hidden", isDark);
     iconMoon?.classList.toggle("hidden", !isDark);
   }
-
   syncIcon();
 
   themeToggle?.addEventListener("click", () => {
     const next = root.dataset.theme === "dark" ? "light" : "dark";
     root.dataset.theme = next;
-    localStorage.setItem("theme", next);
+    try {
+      localStorage.setItem("theme", next);
+    } catch {}
     syncIcon();
   });
 
+  // Header gains a background once the page scrolls.
+  const onScroll = () => header?.setAttribute("data-scrolled", String(window.scrollY > 8));
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  // Mobile menu.
   const menuToggle = document.getElementById("menu-toggle");
   const mobileNav = document.getElementById("mobile-nav");
+  function setMenu(open: boolean) {
+    mobileNav?.classList.toggle("hidden", !open);
+    menuToggle?.setAttribute("aria-expanded", String(open));
+    menuToggle?.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
+    if (open) header?.setAttribute("data-scrolled", "true");
+    else onScroll();
+  }
+  menuToggle?.addEventListener("click", () => setMenu(mobileNav?.classList.contains("hidden") ?? false));
+  mobileNav?.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => setMenu(false)));
 
-  menuToggle?.addEventListener("click", () => {
-    mobileNav?.classList.toggle("hidden");
-    mobileNav?.classList.toggle("flex");
-  });
+  // Highlight the section currently in view.
+  const links = document.querySelectorAll<HTMLAnchorElement>("[data-nav-link]");
+  const sections = Array.from(links)
+    .map((link) => document.getElementById(link.dataset.navLink ?? ""))
+    .filter((el): el is HTMLElement => el !== null);
 
-  mobileNav?.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => {
-      mobileNav.classList.add("hidden");
-      mobileNav.classList.remove("flex");
-    });
-  });
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        links.forEach((link) => {
+          link.setAttribute("aria-current", String(link.dataset.navLink === entry.target.id));
+        });
+      });
+    },
+    { rootMargin: "-45% 0px -50% 0px" },
+  );
+  sections.forEach((section) => observer.observe(section));
 </script>
