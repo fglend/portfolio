@@ -17,6 +17,8 @@ const payload = JSON.stringify({
   tags: project.tags,
   href: project.href,
   visibility: visibilityLabel[project.visibility],
+  period: project.period,
+  stats: project.stats ?? [],
 });
 
 const tagLimit = featured ? project.tags.length : 4;
@@ -44,6 +46,7 @@ const host = project.href ? new URL(project.href).hostname.replace(/^www\./, "")
       {visibilityLabel[project.visibility]}
     </span>
     <span class="text-[var(--fg-faint)]">{project.keyRole}</span>
+    {project.period && <span class="ml-auto font-mono text-[var(--fg-faint)]">{project.period}</span>}
   </div>
 
   <h3
@@ -58,6 +61,19 @@ const host = project.href ? new URL(project.href).hostname.replace(/^www\./, "")
   <p class:list={["mt-3 text-[var(--fg-muted)]", featured ? "max-w-[68ch]" : "line-clamp-4 text-sm"]}>
     {project.description}
   </p>
+
+  {
+    project.stats && project.stats.length > 0 && (
+      <dl class="mt-5 grid grid-cols-3 gap-3 border-y border-[var(--border)] py-3">
+        {project.stats.map((stat) => (
+          <div class="flex min-w-0 flex-col-reverse justify-end">
+            <dt class="mt-1 text-xs leading-snug text-[var(--fg-faint)]">{stat.label}</dt>
+            <dd class="font-display text-xl font-semibold leading-none text-[var(--teal)]">{stat.value}</dd>
+          </div>
+        ))}
+      </dl>
+    )
+  }
 
   <div class="mt-5 flex flex-wrap items-center gap-1.5">
     {shownTags.map((tag) => <span class="chip">{tag}</span>)}
