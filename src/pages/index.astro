@@ -14,7 +14,7 @@ import { profile } from "../data/site";
 
 <Layout
   title={`${profile.name} — ${profile.role}`}
-  description={profile.summary}
+  description={`${profile.role} in Los Baños, Philippines · ${profile.tags.join(" · ")}`}
 >
   <Nav />
   <main id="main">

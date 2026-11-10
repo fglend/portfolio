@@ -1,12 +1,71 @@
 ---
 import "../styles/global.css";
+import { profile, experience, education, techStack } from "../data/site";
 
 interface Props {
   title: string;
   description: string;
+  /** Social card image, relative to the site root. */
+  image?: string;
+  /** Set to true for pages that should stay out of search results. */
+  noindex?: boolean;
 }
 
-const { title, description } = Astro.props;
+const { title, description, image = "/og.png", noindex = false } = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const site = Astro.site ?? Astro.url;
+const canonicalUrl = new URL(Astro.url.pathname, site).href;
+const imageUrl = new URL(`${base}${image}`, site).href;
+const siteUrl = new URL(`${base}/`, site).href;
+
+// Structured data so search engines can link this page to a real person and
+// their profiles. Everything is pulled from site.ts to stay in sync.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}#website`,
+      url: siteUrl,
+      name: profile.name,
+      inLanguage: "en",
+      publisher: { "@id": `${siteUrl}#person` },
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": `${canonicalUrl}#webpage`,
+      url: canonicalUrl,
+      name: title,
+      description,
+      isPartOf: { "@id": `${siteUrl}#website` },
+      mainEntity: { "@id": `${siteUrl}#person` },
+    },
+    {
+      "@type": "Person",
+      "@id": `${siteUrl}#person`,
+      name: profile.name,
+      jobTitle: profile.role,
+      description: profile.summary,
+      url: siteUrl,
+      image: imageUrl,
+      email: `mailto:${profile.email}`,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Los Baños",
+        addressRegion: "Laguna",
+        addressCountry: "PH",
+      },
+      sameAs: Object.values(profile.social),
+      worksFor: { "@type": "Organization", name: experience[0].company },
+      alumniOf: [...new Set(education.map((e) => e.school))].map((name) => ({
+        "@type": "EducationalOrganization",
+        name,
+      })),
+      knowsAbout: [...new Set([...profile.tags, ...techStack.flatMap((c) => c.items)])],
+    },
+  ],
+};
 ---
 
 <!doctype html>
@@ -14,14 +73,40 @@ const { title, description } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/favicon.svg`} />
+    <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="author" content={profile.name} />
+    <meta name="keywords" content={[profile.name, ...profile.tags].join(", ")} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large"} />
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
+    <link rel="sitemap" href={`${base}/sitemap.xml`} />
+
+    <!-- Open Graph (LinkedIn, Facebook, Slack, Discord, etc.) -->
+    <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content={profile.name} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${profile.name}, ${profile.role}`} />
+    <meta property="profile:first_name" content={profile.name.split(" ").slice(0, -1).join(" ")} />
+    <meta property="profile:last_name" content={profile.name.split(" ").at(-1)} />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    <meta name="twitter:image:alt" content={`${profile.name}, ${profile.role}`} />
+
     <meta name="theme-color" content="#eef2f0" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#0c1a1c" media="(prefers-color-scheme: dark)" />
-    <title>{title}</title>
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

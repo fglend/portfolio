@@ -8,12 +8,32 @@ export const profile = {
     "I build reliable, scalable backend systems and the tools that ship them.",
   summary:
     "Software developer with 4 years of experience designing backend services, integrations, and developer tooling. Focused on clean architecture, maintainable code, and shipping software teams can rely on.",
+  // Short keyword tags used for the search-result description, the
+  // <meta name="keywords"> tag, and the structured data. Keep the most
+  // important ones first: Google cuts descriptions off around 155 characters.
+  tags: [
+    "Full Stack Developer",
+    "Laravel Developer",
+    "Kafka",
+    "Machine Learning",
+    "Filament",
+    "PostgreSQL",
+    "REST APIs",
+    "DevOps",
+    "Livewire",
+    "React",
+    "Docker",
+    "PHP",
+    "TypeScript",
+    "JavaScript",
+    "Python",
+  ],
   location: "Philippines",
   email: "glendferrer05@gmail.com",
   avatar: "/avatar.jpg",
   social: {
     github: "https://github.com/fglend",
-    linkedin: "https://linkedin.com/in/glend-ferrer-85072a173",
+    linkedin: "https://linkedin.com/in/gdferrer",
   },
 } as const;
 
@@ -315,7 +335,7 @@ export const projects: ProjectEntry[] = [
     contributions: [
       "Led development of the platform (700+ commits), designing and building most of the system: data model, multi-tenancy, survey engine, reporting pipeline, dashboards and admin tooling.",
       "Built separate Admin and LGU Office panels with office-hierarchy tenancy (each office plus its descendants) and five-tier role-based access: super admin, LGU admin, staff, encoder and viewer.",
-      "Built a drag-and-edit questionnaire builder with many question types (choice, multi-field groups, repeatable tables, \"Others, specify\"), skip logic, live preview and automated structure checks, plus edit locking, conflict detection and safe code renumbering for concurrent editors.",
+      'Built a drag-and-edit questionnaire builder with many question types (choice, multi-field groups, repeatable tables, "Others, specify"), skip logic, live preview and automated structure checks, plus edit locking, conflict detection and safe code renumbering for concurrent editors.',
       "Implemented global questionnaire templates that offices copy and customize, with change tracking against the master template.",
       "Developed the web survey workflow for enumerators to find or register families, detect possible duplicates, prefill addresses and resume drafts, with validation and conditional skip logic.",
       "Built the mobile collector sync API with Laravel Sanctum tokens, device enrolment codes, revoke/reinstate and sync-activity monitoring for offline tablets.",
