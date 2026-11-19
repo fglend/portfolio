@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { profile, experience, education, techStack } from "../data/site";
+import Analytics from "@vercel/analytics/astro";
 
 interface Props {
   title: string;
@@ -121,6 +122,8 @@ const jsonLd = {
       const theme = stored ?? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
       document.documentElement.dataset.theme = theme;
     </script>
+
+    <Analytics />
   </head>
   <body class="bg-[var(--bg)] text-[var(--fg)] antialiased">
     <a
